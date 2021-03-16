@@ -33,7 +33,7 @@ const testClientStream = async (c: HelloClient) => {
     if (err) {
       console.log(err)
     } else {
-      console.log(resp)
+      console.log(resp.toObject())
     }
   })
 
