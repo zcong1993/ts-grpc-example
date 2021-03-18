@@ -64,6 +64,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.2.11",
     "@zcong/ts-grpc-helper": "^0.1.0",
+    "etcd3": "^1.1.0",
     "google-protobuf": "^3.15.6"
   }
 }
