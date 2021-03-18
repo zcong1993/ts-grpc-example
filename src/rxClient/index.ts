@@ -1,4 +1,4 @@
-import { from, interval, of } from 'rxjs'
+import { range, interval, of } from 'rxjs'
 import { take, map, concatAll } from 'rxjs/operators'
 import * as grpc from '@grpc/grpc-js'
 import {
@@ -38,14 +38,12 @@ const testClientStream = async (c: HelloClient) => {
   })
 
   observerToWriteStream(
-    from(
-      Array(5)
-        .fill(null)
-        .map((_, i) => {
-          const req = new pb.EchoRequest()
-          req.setMessage(`test ${i}`)
-          return req
-        })
+    range(0, 5).pipe(
+      map((val) => {
+        const req = new pb.EchoRequest()
+        req.setMessage(`test ${val}`)
+        return req
+      })
     ),
     call
   )
@@ -55,9 +53,11 @@ const testDuplexStream = async (c: HelloClient) => {
   const call = c.duplexStream()
 
   const result$ = readStreamToObserver(call)
-  result$.forEach((data) => {
-    console.log(data.toObject())
-  })
+  result$
+    .forEach((data) => {
+      console.log(data.toObject())
+    })
+    .then(() => console.log('end'))
 
   const source$ = interval(1000).pipe(
     take(5),

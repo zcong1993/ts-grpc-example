@@ -65,10 +65,10 @@ const testDuplexStream = async (c: HelloClient) => {
   })
 
   for (let i = 0; i < 5; i++) {
+    await sleep(1000)
     const req = new pb.EchoRequest()
     req.setMessage(`test ${i}`)
     call.write(req)
-    await sleep(1000)
   }
 
   call.end()
